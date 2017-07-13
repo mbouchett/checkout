@@ -1,46 +1,22 @@
-#include <iostream>
-#include <stdio.h>
-#include <termios.h>
-#include <unistd.h>
-#include <fcntl.h>
+#include <iostream>     //console Input/Output
+#include <time.h>       //include system time
 
 using namespace std;
 
-int kbhit(void)
-{
-  struct termios oldt, newt;
-  int ch;
-  int oldf;
-
-  tcgetattr(STDIN_FILENO, &oldt);
-  newt = oldt;
-  newt.c_lflag &= ~(ICANON | ECHO);
-  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-  oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
-  fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
-
-  ch = getchar();
-
-  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-  fcntl(STDIN_FILENO, F_SETFL, oldf);
-
-  if(ch != EOF)
-  {
-    ungetc(ch, stdin);
-    return 1;
-  }
-
-  return 0;
-}
-
 int main(void)
 {
-
-  while(!kbhit()){
-      cout << ".";
-  };
-
-  cout<<"You pressed "<<(char)getchar();
-
-  return 0;
+    int const SIMTIME = 60;        //Simulation runtime in seconds 900 = 15min
+    time_t timeBeg = time(0);       //used for the timer
+    time_t timeEnd = time(0);       //used for the timer
+    
+    while((timeEnd-timeBeg) <= SIMTIME){
+        
+        
+        timeEnd = time(0);
+    };
+    
+    
+    cout << "Simulation finished - Runtime: " << (SIMTIME / 60) << " minutes.";
+    return 0;
 }
+
