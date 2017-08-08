@@ -1,7 +1,12 @@
 #include <iostream>     //console Input/Output
 #include <time.h>       //include system time
+#include "Customer.h"
+#include <vector>
 
 using namespace std;
+
+//function prototypes
+void display(vector<Customer>);
 
 int main(void)
 {
@@ -13,9 +18,16 @@ int main(void)
     int elapsedSecs = timeEnd-timeBeg;
     int oldSecs1 = elapsedSecs;
     int oldSecs2 = elapsedSecs;
+    int oldSecs3 = elapsedSecs;
     
     int hour = 10;
     int minutes = 0;
+    
+    vector<Customer> customers;
+    Customer *c1 = new Customer;
+    Customer *c2 = new Customer;
+    customers.push_back(*c1);
+    customers.push_back(*c2);
     
     cout << "The store is open!\n------------------\n";
     cout << "The time is now " << hour <<":00\n";
@@ -44,8 +56,11 @@ int main(void)
             }
         }
         
-        // event timer 
-        
+        // event timer / each second
+        if(elapsedSecs > oldSecs3){
+            oldSecs3 = elapsedSecs;
+            display(customers);
+        }
         
         timeEnd = time(0);
     };
@@ -55,3 +70,6 @@ int main(void)
     return 0;
 }
 
+void display(vector<Customer> c){
+    cout << c.size() << endl;
+}
