@@ -1,33 +1,34 @@
 #include <iostream>     //console Input/Output
 #include <time.h>       //include system time
-#include "Customer.h"
-#include <vector>
+#include "Store.h"
+#include <time.h>
 
 using namespace std;
-
-//function prototypes
-void display(vector<Customer>);
+// function prototypes
+bool newCustomerCuesUp();
+int getWait(int);
+int customersEnterStore(int);
 
 int main(void)
 {
+    srand(time(NULL));              //seed the random generator
     //1 second real time = 1 minute simulation time;
     int const SIMTIME = 480;        //Simulation runtime in minutes 480 = 8 hrs
     int const DISP_FREQ = 10;       //real time seconds/sim-time minutes display
+
     time_t timeBeg = time(0);       //used for the timer
     time_t timeEnd = time(0);       //used for the timer
     int elapsedSecs = timeEnd-timeBeg;
-    int oldSecs1 = elapsedSecs;
-    int oldSecs2 = elapsedSecs;
-    int oldSecs3 = elapsedSecs;
+    int oldSecs1 = elapsedSecs;     //tracks elapsed seconds
+    int oldSecs2 = elapsedSecs;     //tracks elapsed seconds
+    int oldSecs3 = elapsedSecs;     //tracks elapsed seconds
+    int wait = 0;                   // holds wait time
     
     int hour = 10;
     int minutes = 0;
     
-    vector<Customer> customers;
-    Customer *c1 = new Customer;
-    Customer *c2 = new Customer;
-    customers.push_back(*c1);
-    customers.push_back(*c2);
+    Store store(200);
+    
     
     cout << "The store is open!\n------------------\n";
     cout << "The time is now " << hour <<":00\n";
@@ -49,27 +50,71 @@ int main(void)
             if(minutes > 59) minutes = 0; 
             if(minutes < 10){
                 cout << hour << ":0" << minutes; 
-                cout << " - No register open No customers in line\n";
+                cout << " - " << store.getRegistersOpen() 
+                        << " register open " << store.custCount() 
+                        << " customers in line\n";
             }else{
                 cout << hour << ":" << minutes;
-                cout << " - No register open No customers in line\n";
+                cout << " - " << store.getRegistersOpen()
+                        << " registers open " << store.custCount() 
+                        << " customers in line\n";
             }
         }
         
-        // event timer / each second
+        // event timer / each second second = minute
         if(elapsedSecs > oldSecs3){
             oldSecs3 = elapsedSecs;
-            display(customers);
+
+                // New customer cues?
+                if(newCustomerCuesUp())
+                    wait = getWait(hour);
+                    if(!store.newCustomer(wait))
+                        cout << "the store is full\n";
+
+            
+            // elapse time
+            store.elapseTime();
+            //store.display();
+            store.dispLines();
         }
         
         timeEnd = time(0);
     };
     
-    
-    cout << "Simulation finished - Runtime: " << (SIMTIME / 60) << " minutes.";
+    store.dispStoreStatus();
+    cout << "Simulation finished - Runtime: " << (SIMTIME / 60) 
+            << " minutes real time - 8 hours simulation time.";
     return 0;
 }
 
-void display(vector<Customer> c){
-    cout << c.size() << endl;
+/*
+ * checked every sim-minute the
+ * chance that a new customer got in line
+*/
+bool newCustomerCuesUp(){
+    int odds = rand() % 100 + 1;
+    if (odds > 30)          // 70% chance of a new customer this sim-minute
+        return true;
+    return false;
+}
+
+/*
+ * calculates a a customer's wait time in sim-minutes
+ * based on peak or off peak tine of day
+ */
+int getWait(int timeOfDay){
+    int wait = 0;       //wait in minutes
+    int p = rand() % 100 + 1;
+    // peak hours noon to 1:00p
+    if(timeOfDay == 12){
+        if(p > 5)
+            wait = rand() % 5 + 5;  // 5 to 10 minute wait
+        else
+            wait = rand() % 3 + 1;  // 1 to 3 minute wait
+    }else{ //off peak
+        if(p > 25)
+            wait = rand() % 3 + 1;  // 1 to 3 minute wait
+        else
+            wait = rand() % 5 + 5;  // 5 to 10 minute wait
+    }
 }

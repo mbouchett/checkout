@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Customer.h</itemPath>
+      <itemPath>Store.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -14,6 +15,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>Customer.cpp</itemPath>
+      <itemPath>Store.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -42,6 +44,10 @@
       </item>
       <item path="Customer.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Store.cpp" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Store.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
@@ -68,6 +74,10 @@
       <item path="Customer.cpp" ex="false" tool="0" flavor2="0">
       </item>
       <item path="Customer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Store.cpp" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="Store.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
